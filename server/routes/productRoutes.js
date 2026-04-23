@@ -1,0 +1,24 @@
+const express = require('express');
+const router = express.Router();
+const {
+  createProduct,
+  getProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct,
+} = require('../controllers/productController');
+const { protect } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
+
+router
+  .route('/')
+  .post(protect, upload.single('invoice'), createProduct)
+  .get(protect, getProducts);
+
+router
+  .route('/:id')
+  .get(protect, getProductById)
+  .put(protect, upload.single('invoice'), updateProduct)
+  .delete(protect, deleteProduct);
+
+module.exports = router;
